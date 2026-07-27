@@ -4,8 +4,6 @@ After configuring Sysmon, NXLog, and the scripts to extract the Sysmon logs live
 
 The actions taken during those 48 hours are designed to create normal benign activity, fill the machine with realistic software to prevent sandbox detection, and there'll be instances where no actions are taken for hours. The manual actions are the following.
 
-2026-07-21
-
 1. Windows Updates were run.
 2. Installing, opening and using Brave Browser.
 3. Install and opening Foxit Free PDF Reader.
@@ -33,3 +31,4 @@ user: "secretuser@mysql1234"
 
 11. Installed Microsoft 365 (free with limited features) from the Microsoft Store. This executed a reboot on its own.
 12. Create DOCX document from Word Invoice Template and saved the document to the Desktop as `network-equipment-invoice.docx`
+13. Several reboots and normal operations occurred for the total of 48hours.

@@ -9,7 +9,7 @@ from src.metrics.averages import Averages, AveragesDict, GroupedAveragesDict
 
 def create_2d_graph(averages: AveragesDict, category: str):
 
-    title: str = f"Macro average per {category}"
+    title: str = f"Rule performance per {category}"
 
     methods: list[str] = [key for key in averages]
 
@@ -28,7 +28,7 @@ def create_2d_graph(averages: AveragesDict, category: str):
         "FNR": "#E15759",
     }
 
-    bar_width = 0.15
+    bar_width = 0.18
     x = numpy.arange(len(methods))
     fig, ax = pyplot.subplots(figsize=(13, 7), constrained_layout=True)
 
@@ -65,26 +65,26 @@ def create_2d_graph(averages: AveragesDict, category: str):
     )
 
     for bars in [bars1, bars2, bars3, bars4]:
-        ax.bar_label(bars, fmt="%.2f", padding=4, fontsize=10, fontweight="bold")
+        ax.bar_label(bars, fmt="%.2f", padding=4, fontsize=15, fontweight="bold")
 
     ax.set_ylim(0, 1.05)
 
-    ax.set_ylabel("Metric Value", fontsize=15, fontweight="bold")
+    ax.set_ylabel("Metric Value", fontsize=20, fontweight="bold")
 
-    ax.set_xlabel(f"{category}", fontsize=15, fontweight="bold")
+    ax.set_xlabel(f"{category}", fontsize=20, fontweight="bold")
 
     ax.set_xticks(x)
     methods = [
         method.replace("_", " ").title().replace(" Ai", " AI") for method in methods
     ]
-    ax.set_xticklabels(methods, fontsize=12)
+    ax.set_xticklabels(methods, fontsize=20)
 
     ax.set_yticks(numpy.arange(0, 1.1, 0.1))
     ax.tick_params(axis="y", labelsize=11)
 
     ax.set_title(
         f"{title}",
-        fontsize=20,
+        fontsize=25,
         fontweight="bold",
         pad=20,
     )
@@ -94,14 +94,100 @@ def create_2d_graph(averages: AveragesDict, category: str):
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
-    ax.legend(ncol=4, frameon=False, fontsize=12, loc="upper right")
+    ax.legend(ncol=4, frameon=False, fontsize=20, loc="upper right")
 
     pyplot.show()
 
 
-def create_grouped_2d_graph(
+def create_grouped_2d_graph_horizontal(
     data: GroupedAveragesDict, category: str = "Generation Method"
 ):
+    rule_type_labels = {"detection": "Detection", "correlation": "Correlation"}
+    keys: list[tuple[str, str]] = [
+        (method, rule_type) for method in data for rule_type in data[method]
+    ]
+    block_labels: list[str] = [
+        f"{method.replace('_', ' ').title()}\n{rule_type_labels[rule_type]}"
+        for method, rule_type in keys
+    ]
+    recall: list[float] = [float(data[m][r]["recall"]) for m, r in keys]
+    precision: list[float] = [float(data[m][r]["precision"]) for m, r in keys]
+    f1_score: list[float] = [float(data[m][r]["f1_score"]) for m, r in keys]
+    false_negative_rate: list[float] = [
+        float(data[m][r]["false_negative_rate"]) for m, r in keys
+    ]
+    pyplot.style.use("seaborn-v0_8-whitegrid")
+    colors = {
+        "Recall": "#4E79A7",
+        "Precision": "#F28E2B",
+        "F1": "#59A14F",
+        "FNR": "#E15759",
+    }
+    bar_width = 0.15
+    x = numpy.arange(len(block_labels))
+
+    # Height doubled (7 -> 14) to give each category cluster room to breathe.
+    fig, ax = pyplot.subplots(figsize=(15, 14), constrained_layout=True)
+
+    bars1 = ax.barh(
+        x + 1.5 * bar_width,
+        recall,
+        height=bar_width,
+        color=colors["Recall"],
+        label="Recall",
+    )
+    bars2 = ax.barh(
+        x + 0.5 * bar_width,
+        precision,
+        height=bar_width,
+        color=colors["Precision"],
+        label="Precision",
+    )
+    bars3 = ax.barh(
+        x - 0.5 * bar_width,
+        f1_score,
+        height=bar_width,
+        color=colors["F1"],
+        label="F1 Score",
+    )
+    bars4 = ax.barh(
+        x - 1.5 * bar_width,
+        false_negative_rate,
+        height=bar_width,
+        color=colors["FNR"],
+        label="Miss Rate",
+    )
+    for bars in [bars1, bars2, bars3, bars4]:
+        ax.bar_label(bars, fmt="%.2f", padding=4, fontsize=15, fontweight="bold")
+
+    for i in range(2, len(block_labels), 2):
+        ax.axhline(i - 0.5, color="grey", linestyle=":", linewidth=1, alpha=0.6)
+
+    ax.set_xlim(0, 1.12)
+    ax.set_xlabel("Metric Value", fontsize=20, fontweight="bold")
+    ax.set_ylabel(f"Generation Method and Rule Type", fontsize=20, fontweight="bold")
+    ax.set_yticks(x)
+    ax.set_yticklabels(block_labels, fontsize=20)
+    ax.set_xticks(numpy.arange(0, 1.1, 0.1))
+    ax.tick_params(axis="x", labelsize=11)
+    ax.set_title(
+        f"Rule performance per generation method and rule type",
+        fontsize=20,
+        fontweight="bold",
+        pad=20,
+    )
+    ax.grid(axis="x", linestyle="--", alpha=0.4)
+    ax.grid(axis="y", visible=False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.legend(ncol=4, frameon=False, fontsize=16, loc="lower right")
+
+    ax.invert_yaxis()
+
+    pyplot.show()
+
+
+def create_grouped_2d_graph_vertical(data: GroupedAveragesDict, category: str = ""):
     rule_type_labels = {"detection": "Detection", "correlation": "Correlation"}
 
     keys: list[tuple[str, str]] = [
@@ -127,7 +213,7 @@ def create_grouped_2d_graph(
         "F1": "#59A14F",
         "FNR": "#E15759",
     }
-    bar_width = 0.15
+    bar_width = 0.2
     x = numpy.arange(len(block_labels))
 
     fig, ax = pyplot.subplots(figsize=(15, 7), constrained_layout=True)
@@ -162,16 +248,16 @@ def create_grouped_2d_graph(
     )
 
     for bars in [bars1, bars2, bars3, bars4]:
-        ax.bar_label(bars, fmt="%.2f", padding=4, fontsize=9, fontweight="bold")
+        ax.bar_label(bars, fmt="%.2f", padding=4, fontsize=15, fontweight="bold")
 
     for i in range(2, len(block_labels), 2):
         ax.axvline(i - 0.5, color="grey", linestyle=":", linewidth=1, alpha=0.6)
 
     ax.set_ylim(0, 1.05)
-    ax.set_ylabel("Metric Value", fontsize=15, fontweight="bold")
-    ax.set_xlabel(f"{category}", fontsize=15, fontweight="bold")
+    ax.set_ylabel("Metric Value", fontsize=20, fontweight="bold")
+    ax.set_xlabel(f"{category}", fontsize=20, fontweight="bold")
     ax.set_xticks(x)
-    ax.set_xticklabels(block_labels, fontsize=10)
+    ax.set_xticklabels(block_labels, fontsize=20)
     ax.set_yticks(numpy.arange(0, 1.1, 0.1))
     ax.tick_params(axis="y", labelsize=11)
     ax.set_title(
@@ -184,7 +270,7 @@ def create_grouped_2d_graph(
     ax.grid(axis="x", visible=False)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.legend(ncol=4, frameon=False, fontsize=12, loc="upper right")
+    ax.legend(ncol=4, frameon=False, fontsize=20, loc="upper right")
     pyplot.show()
 
 
@@ -196,6 +282,11 @@ if __name__ == "__main__":
         averages.general_macro_average_gen_method,
         category="Generation Method",
     )
-    create_2d_graph(averages.general_macro_average_rule_type, category="Rule Type")
+    # create_2d_graph(averages.general_macro_average_rule_type, category="Rule Type")
 
-    create_grouped_2d_graph(averages.general_macro_average_rule_type_and_gen_method)
+    # create_grouped_2d_graph_horizontal(
+    # averages.general_macro_average_rule_type_and_gen_method
+    # )
+    # create_grouped_2d_graph_vertical(
+    # averages.general_macro_average_rule_type_and_gen_method
+    # )

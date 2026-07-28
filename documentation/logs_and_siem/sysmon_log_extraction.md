@@ -87,7 +87,7 @@ try {
     Log "SERIAL OPEN"
 
     # Test for confirmation that COM1 workds -> Confirmed to work.
-    $port.WriteLine("NXLOG SERIAL TEST")
+    # $port.WriteLine("NXLOG SERIAL TEST")
 
     Log "SERIAL TEST SENT"
 

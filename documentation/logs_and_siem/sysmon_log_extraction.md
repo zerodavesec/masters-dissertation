@@ -8,7 +8,8 @@ The machine gets configured with a serial device (image below) and the setting t
 
 With this setup, a pipe is created with a Python Script on the host, then internally, NXLogs (sysmon) get collected and routed through the COM1 serial port, using the created pipe and being written to a `.jsonl` file.
 
-(IMAGE of DIAGRAM)
+Diagram of Sysmon Log Extraction:
+![Diagram of Sysmon Log Extration](../images/SysmonExtraction.png)
 
 ## Python Script
 

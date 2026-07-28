@@ -288,7 +288,7 @@ After hardening the VM, a 55% percent improvement was seen (from 18 traces to 8)
 
 ### AFTER
 
-```
+```powershell
 * Pafish (Paranoid Fish) *
 
 [-] Windows version: 6.2 build 9200
@@ -385,7 +385,7 @@ After hardening the VM, a 55% percent improvement was seen (from 18 traces to 8)
 
 Another testing tool to see how many techniques are mitigated showed very positive results. The remaining are either unavailable via VBoxManage and/or make the VM not work correctly. A total of 89.5\% or (299 successful checks out of 334).
 
-```
+```powershell
 Al-kasher
 [al-khaser version 0.82]
 -------------------------[Initialisation]-------------------------

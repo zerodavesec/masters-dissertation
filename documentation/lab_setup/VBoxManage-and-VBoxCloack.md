@@ -109,13 +109,13 @@ Refs:
 
 This is an attempt to remove the CPUID-visible hypervisor-present bit and vendor string ("VBoxVBoxVBox").
 
-```
+```powershell
 .\VBoxManage.exe modifyvm "Windows10" --paravirtprovider none
 ```
 
 This caused the machine to fail to boot and be usable so it was reverted by:
 
-```
+```powershell
 .\VBoxManage.exe modifyvm "Windows10" --paravirtprovider default
 ```
 
@@ -123,7 +123,7 @@ This caused the machine to fail to boot and be usable so it was reverted by:
 
 If checked, I want the disk identifiers to be realistic. SATA is used in the machine so `ahci` is the controlelr:
 
-```
+```powershell
 .\VBoxManage.exe setextradata "Windows10" "VBoxInternal/Devices/ahci/0/Config/Port0/ModelNumber" "CT500P3PSSD8"
 .\VBoxManage.exe setextradata "Windows10" "VBoxInternal/Devices/ahci/0/Config/Port0/SerialNumber" "6479_A76D_4000_0176"
 .\VBoxManage.exe setextradata "Windows10" "VBoxInternal/Devices/ahci/0/Config/Port0/FirmwareRevision" "P9CR40A"
@@ -141,7 +141,7 @@ These are officially undocumented settings that I have used in the past.
 - `TSCMode RealTSCOffset` ties the guest's Time Stamp Counter to the host's real hardware TSC (fixed offset) instead of VirtualBox's default virtualised counter; this is an attempt to defeat anti-vm detection `RDTSC → CPUID → RDTSC` timing-delta checks.
 - `CPUM/SSE4.1` / `CPUM/SSE4.2` force those CPUID feature bits on.
 
-```
+```powershell
 .\VBoxManage.exe setextradata "Windows10" "VBoxInternal/TM/TSCMode" "RealTSCOffset"
 .\VBoxManage.exe setextradata "Windows10" "VBoxInternal/CPUM/SSE4.1" 1
 .\VBoxManage.exe setextradata "Windows10" "VBoxInternal/CPUM/SSE4.2" 1
@@ -192,7 +192,7 @@ After hardening the VM, a 55% percent improvement was seen (from 18 traces to 8)
 
 ### BEFORE
 
-```
+```powershell
 * Pafish (Paranoid Fish) *
 
 [-] Windows version: 6.2 build 9200

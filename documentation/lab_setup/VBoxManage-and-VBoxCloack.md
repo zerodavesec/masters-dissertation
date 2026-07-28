@@ -178,7 +178,7 @@ Run as per documented. Ref: https://github.com/d4rksystem/VBoxCloak
 
 ## Other items
 
-Edited manually some values for the RegistryKeys in the VMs: ![Manual Changes to Reg Keys](./images/ManualChangesRegKeys.png)
+Edited manually some values for the RegistryKeys in the VMs: ![Manual Changes to Reg Keys](../images/ManualChangesRegKeys.png)
 
 The following values were changed from the default values to what the iamge shows:
 

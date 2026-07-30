@@ -41,3 +41,7 @@ certutil -hashfile .\nxlog-ce-3.2.2329.msi sha256
 SHA256 hash of .\nxlog-ce-3.2.2329.msi:
 015d546d0b1a31cf10a6dd00d36f5e17503eaf45c164f73b6e578970c08da082
 CertUtil: -hashfile command completed successfully.
+
+## Architecture
+
+![Sandbox Architecture](../images/LabSetup.png)

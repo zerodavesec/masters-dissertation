@@ -31,22 +31,24 @@ Once installed, the details of the installation are:
 - Wazuh Dashboard: `dpkg -l | grep wazuh-dashboard`
   wazuh-dashboard 4.14.7-1
 - Indexer: `curl -X GET "https://localhost:9200" -u admin:<redacted> -k`
+  ```json
   {
-  "name" : "node-1",
-  "cluster_name" : "wazuh-cluster",
-  "cluster_uuid" : "_zjNYWFNQQq5d8GtR-O3MA",
-  "version" : {
-  "number" : "7.10.2",
-  "build_type" : "deb",
-  "build_hash" : "2dee7e9c22f8de94b259b6ab2cc26b47cfa424f6",
-  "build_date" : "2026-07-10T09:18:20.444269609Z",
-  "build_snapshot" : false,
-  "lucene_version" : "9.12.3",
-  "minimum_wire_compatibility_version" : "7.10.0",
-  "minimum_index_compatibility_version" : "7.0.0"
-  },
-  "tagline" : "The OpenSearch Project: https://opensearch.org/"
+    "name": "node-1",
+    "cluster_name": "wazuh-cluster",
+    "cluster_uuid": "_zjNYWFNQQq5d8GtR-O3MA",
+    "version": {
+      "number": "7.10.2",
+      "build_type": "deb",
+      "build_hash": "2dee7e9c22f8de94b259b6ab2cc26b47cfa424f6",
+      "build_date": "2026-07-10T09:18:20.444269609Z",
+      "build_snapshot": false,
+      "lucene_version": "9.12.3",
+      "minimum_wire_compatibility_version": "7.10.0",
+      "minimum_index_compatibility_version": "7.0.0"
+    },
+    "tagline": "The OpenSearch Project: https://opensearch.org/"
   }
+  ```
 
 ### Configuring Wazuh Manager for Ingestion of Logs
 
@@ -154,4 +156,33 @@ NOTE: At some point during troubleshooting I checked whether permissions to the 
 
 It will be a bit of a longer process but an empty .JSONL file will be created, and the bening logs will be fed first, performing part 1 of 2 for targeted testing.
 
---- STill under work I think i will add a custom datafield: `{"log_sample": "benign"}` or `{"log_sample: "sample_A_aabbccdd}` so I can track everything in one go.
+The idea is that an empty file (.jsonl) will be created in the directory, and then the appropriate logs for testing will be appended to that file with command: `cat original.jsonl >> ./sysmon/tracked_file.jsonl`
+
+Alternatively, all logs will go through a processing pipeline coded in Python where each log-line of JSONL will get a new `key:value` pair in the form of:
+
+```json
+{
+  ...,
+  "logname": "<Name of log file>,
+}
+```
+
+For example:
+
+```json
+{
+  ...,
+  "logname": "bening.jsonl"
+}
+```
+
+or
+
+```json
+{
+  ...,
+  "logname": "malicious_sample_AKIRA_abcabc.jsonl"
+}
+```
+
+This allows for testing everything at the same time, and checking which rules triggered on which logs, having full control and knowledge over the origin of rules as well as origin of logs.

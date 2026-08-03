@@ -64,6 +64,39 @@ curl http://localhost:11434/api/tags | jq
 }
 ```
 
+#### Ollama is using GPU first, ROCC backend
+```bash
+$ ollama ps
+NAME          ID              SIZE      PROCESSOR    CONTEXT    UNTIL
+gemma4:12b    4eb23ef187e2    8.4 GB    100% GPU     16384      About a minute from now
+```
+
+```bash
+$ sudo pacman -Q --info ollama-rocm
+[sudo] password for zerodave:
+Name            : ollama-rocm
+Version         : 0.32.2-1
+Description     : Create, run and share large language models (LLMs) with ROCm
+Architecture    : x86_64
+URL             : https://github.com/ollama/ollama
+Licenses        : MIT
+Groups          : None
+Provides        : None
+Depends On      : libgcc  libstdc++  glibc  ollama  hipblas
+Optional Deps   : None
+Required By     : None
+Optional For    : None
+Conflicts With  : None
+Replaces        : None
+Installed Size  : 2.85 GiB
+Packager        : Sven-Hendrik Haase <svenstaro@archlinux.org>
+Build Date      : Wed 22 Jul 2026 06:42:31 PM UTC
+Install Date    : Fri 24 Jul 2026 10:55:06 AM UTC
+Install Reason  : Explicitly installed
+Install Script  : No
+Validated By    : Signature
+```
+
 
 ## Gemma4:12b Configuration in scripts
 

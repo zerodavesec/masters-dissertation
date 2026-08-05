@@ -15,6 +15,7 @@
         <decoded_as>json</decoded_as>
         <field name="SourceName">Microsoft-Windows-Sysmon</field>
         <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
         <field name="TargetFilename" type="pcre2">(?i)\\akira_readme\.txt$</field>
         <field name="TargetFilename" type="pcre2">(?i)(PerfLogs|Desktop)</field>
         <description>Akira ransom note created</description>

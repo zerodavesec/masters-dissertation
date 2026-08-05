@@ -1,0 +1,16 @@
+title: MAN_PHORPIEX_DET_1
+id: 4f391976-4c4c-4c7f-b963-06abade413d8
+status: experimental
+description: Identifies a specific pattern of phorpiex dropping itself into C:\\Windows\\.
+author: Manual
+date: 04/08/2026
+tags:
+logsource:
+  category: file_created
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    TargetFileName: "C:\\Windows\\syscrovhost.exe"
+  condition: selection
+level: medium

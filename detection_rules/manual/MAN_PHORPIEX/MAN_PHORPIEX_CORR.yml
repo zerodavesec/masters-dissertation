@@ -1,0 +1,13 @@
+title: MAN_PHORPIEX_CORR
+id: 024def37-ae75-43bf-b77e-fd7cb6040da3
+status: experimental
+description: correlates when MAN_PHORPIEX_DET_1 and MAN_PHORPIEX_DET_2 ocurr within 2 minutes of each other.
+correlation:
+  type: temporal
+  rules:
+    - 4f391976-4c4c-4c7f-b963-06abade413d8
+    - 667fa695-f533-460c-b914-2ca2c99498a6
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

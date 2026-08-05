@@ -1,0 +1,52 @@
+<group name="MAN_PHORPIEX_DET_1,">
+    <rule id="900021" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Identifies a specific pattern of phorpiex dropping itself into C:\Windows\ -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 4f391976-4c4c-4c7f-b963-06abade413d8 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFilename">C:\\Windows\\syscrovhost.exe</field>
+        <description>MAN_PHORPIEX_DET_1</description>
+        <mitre>
+            <id>T1105</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_PHORPIEX_DET_2,">
+    <rule id="900022" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Matches on an EventID 13 (Registry Value Set) where an executable in a suspicious directory is configured to run based on RegRunKeys for persistence. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 667fa695-f533-460c-b914-2ca2c99498a6 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\Microsoft\\Windows\\CurrentVersion\\Run</field>
+        <field name="Details" type="pcre2">(?i)(C:\\Windows\\|\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="Details" type="pcre2">(?i)\.exe</field>
+        <description>MAN_PHORPIEX_DET_2</description>
+        <mitre>
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_PHORPIEX_CORR,">
+    <rule id="900023" level="14" timeframe="120">
+        <!-- Author: Manual -->
+        <!-- Description: Correlates MAN_PHORPIEX_DET_1 and MAN_PHORPIEX_DET_2 within 2 minutes on the same host. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 024def37-ae75-43bf-b77e-fd7cb6040da3 -->
+        <if_matched_sid>900021</if_matched_sid>
+        <if_sid>900022</if_sid>
+        <description>MAN_PHORPIEX_CORR</description>
+    </rule>
+</group>

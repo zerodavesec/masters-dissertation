@@ -1,0 +1,48 @@
+<group name="MAN_LUMMA_DET_1">
+    <rule id="900031" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects a DNS query originated from powershell to a typosquatted domain. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 2af818e7-672b-4341-abad-46bf98a293e8 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)(\\powershell\.exe$|\\pwsh\.exe$)</field>
+        <field name="QueryName">clou-dprotect.com</field>
+        <description>MAN_LUMMA_DET_1</description>
+        <mitre>
+            <id>T1036</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_LUMMA_DET_2">
+    <rule id="900032" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects when powershell is the ParentImage with a bypass execution policy and runs an executable with an obfuscated name in '\AppData\Local\Temp'. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: ffebf44c-361a-4647-b3f2-cb3dee66a800 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="ParentImage" type="pcre2">(?i)\\powershell\.exe$</field>
+        <field name="ParentCommandLine" type="pcre2">.*\ Set-ExecutionPolicy\ .*</field>
+        <field name="ParentCommandLine" type="pcre2">.*\ Bypass\ .*</field>
+        <field name="Image" type="pcre2">(?i)\\AppData\\Local\\Temp\\.*[a-zA-Z]{4,20}\.exe$</field>
+        <description>MAN_LUMMA_DET_2</description>
+        <mitre>
+            <id>T1059.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_LUMMA_CORR">
+    <rule id="900033" level="14" timeframe="120">
+        <!-- Sigma ID: 5fc0d3b3-c15a-49c7-b9b0-297bd207359b -->
+        <if_matched_sid>900031</if_matched_sid>
+        <if_sid>900032</if_sid>
+        <description>MAN_LUMMA_COR</description>
+    </rule>
+</group>

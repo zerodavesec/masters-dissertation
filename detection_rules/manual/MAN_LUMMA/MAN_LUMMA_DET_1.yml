@@ -1,0 +1,20 @@
+title: MAN_LUMMA_DET_1
+id: 2af818e7-672b-4341-abad-46bf98a293e8
+status: experimental
+description: Detects a DNS query originated from powershell to a typosquatted domain.
+author: Manual
+date: 04/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    QueryName: "clou-dprotect.com"
+  condition: selection
+falsepositives:
+level: medium

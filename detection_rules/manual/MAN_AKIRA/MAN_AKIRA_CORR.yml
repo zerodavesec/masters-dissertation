@@ -1,0 +1,13 @@
+title: MAN_AKIRA_CORR
+id: 0aa35d71-6834-4d01-976d-c47671e06eac
+status: experimental
+description: Identifies when ransomnotes or logfiles are dropped to the file system and shadow copies are deleted via powershell within a minute of each other.
+correlation:
+  type: temporal
+  rules:
+    - a9a05907-a050-4d9a-a4a3-56d8e39b6f36
+    - c5ea3e2c-3736-4523-bd2b-a7f2733193db
+  group-by:
+    - Hostname
+  timespan: 1m
+level: medium

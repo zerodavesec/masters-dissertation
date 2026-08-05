@@ -1,0 +1,20 @@
+title: MAN_ASYNCRAT_DET_2
+id: 1b0e2485-4a3c-4c97-9a73-7d2f1029274c
+status: experimental
+description: Identifies an executable in the startup folder loading itself in the startup folder having an original filename of 'stub.exe'
+author: Manual
+date: 04/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|contains: '\Windows\Start Menu\Programs\StartUp\'
+    Image|endswith: ".exe"
+    ImageLoaded|contains: '\Windows\Start Menu\Programs\StartUp\'
+    ImageLoaded|endswith: ".exe"
+    OriginalFileName: "Stub.exe"
+  condition: selection
+level: medium

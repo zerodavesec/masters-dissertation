@@ -1,0 +1,73 @@
+<group name="MAN_AKIRA_DET_1,">
+    <!-- Akira logfile matcher -->
+    <rule id="900000" level="0" noalert="1">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFilename" type="pcre2">(?i)\\Log-(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}-([01][0-9]|2[0-3])-([0-5][0-9])-([0-5][0-9])\.txt$</field>
+        <field name="Image" type="pcre2">(?i)(Desktop|Users)</field>
+        <description>Akira log file created</description>
+    </rule>
+
+    <!-- Akira ransomnote matcher -->
+    <rule id="900001" level="0" noalert="1">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="TargetFilename" type="pcre2">(?i)\\akira_readme\.txt$</field>
+        <field name="TargetFilename" type="pcre2">(?i)(PerfLogs|Desktop)</field>
+        <description>Akira ransom note created</description>
+    </rule>
+
+    <!-- Final alert -->
+    <!-- Author: Manual -->
+    <!-- Description: Identifies when a regex pattern that matches the log file from akira, or an akira readme TXT file is dropped in known places. -->
+    <!-- Date: 03/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: a9a05907-a050-4d9a-a4a3-56d8e39b6f36 -->
+    <rule id="900002" level="12">
+        <if_sid>900000,900001</if_sid>
+        <description>MAN_AKIRA_DET_1</description>
+        <mitre>
+            <id>T1486</id>
+        </mitre>
+    </rule>
+</group>
+
+
+<group name="MAN_AKIRA_DET_2,">
+    <!-- Author: Manual -->
+    <!-- Description: Identifies when powershell is being used to remove shadowcopy. Ransomware indicator. -->
+    <!-- Date: 03/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: c5ea3e2c-3736-4523-bd2b-a7f2733193db -->
+    <rule id="900003" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\(powershell|pwsh)\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i)Get\-WmiObject</field>
+        <field name="CommandLine" type="pcre2">(?i)shadowcopy</field>
+        <field name="CommandLine" type="pcre2">(?i)Remove\-WmiObject</field>
+        <description>MAN_AKIRA_DET_2</description>
+        <mitre>
+            <id>T1490</id>
+        </mitre>
+    </rule>
+</group>
+
+
+<group name="MAN_AKIRA_CORR,">
+    <!-- Sigma ID: 0aa35d71-6834-4d01-976d-c47671e06eac -->
+    <!-- Status: experimental -->
+    <rule id="900004" level="12" timeframe="60">
+        <if_matched_sid>900002</if_matched_sid>
+        <if_sid>900003</if_sid>
+        <description>MAN_AKIRA_CORR</description>
+        <mitre>
+            <id>T1486</id>
+            <id>T1490</id>
+        </mitre>
+    </rule>
+</group>

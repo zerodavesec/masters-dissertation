@@ -1,0 +1,24 @@
+title: MAN_ASYNCRAT_DET_1
+id: 11e749ae-ad95-4404-98f4-658dd8490ea0
+status: experimental
+description: Identifies when an executable creates another executable in a suspicious location. Known to be malware techniques.
+author: Manual
+date: 04/08/2026
+tags:
+  - attack.persistence
+logsource:
+  category: file_create
+  product: windows
+detection:
+  selection_1:
+    Image|endswith: ".exe"
+    TargetFilename|endswith: ".exe"
+  selection_2:
+    TargetFilename|contains:
+      - '\Windows\Start Menu\Programs\StartUp\'
+      - '\AppData\Roaming\'
+      - '\Users\Public\'
+      - '\AppData\Local\Temp\'
+  condition: selection_1 and selection_2
+falsepositives:
+level: medium

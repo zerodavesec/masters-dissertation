@@ -1,0 +1,13 @@
+title: MAN_ASYNCRAT_CORR
+id: 024def37-ae75-43bf-b77e-fd7cb6040da3
+status: experimental
+description: Correlation of an executable dropping an executable in a suspicious location followed by an executable in a suspicious location loading itself, and having an originalFileName of 'stub.exe' which is referred to as code within the sample to drop a secondary payload
+correlation:
+  type: temporal_ordered
+  rules:
+    - 11e749ae-ad95-4404-98f4-658dd8490ea0
+    - 1b0e2485-4a3c-4c97-9a73-7d2f1029274c
+  group-by:
+    - Hostname
+  timespan: 1m
+level: medium

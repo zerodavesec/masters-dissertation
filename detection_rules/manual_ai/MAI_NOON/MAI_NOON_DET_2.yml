@@ -1,0 +1,19 @@
+title: MAI_NOON_DET_2
+id: 1c48edb6-9110-40fb-bfc1-5cff8b1390d9
+status: experimental
+description: Matches when an executable from a suspicious location reaches out to known C2 infrastructure.
+author: Manual AI
+date: 06/08/2026
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    Image|contains:
+      - '\AppData\Roaming\'
+      - '\Users\Public\'
+      - '\AppData\Local\Temp\'
+    Image|endswith: ".exe"
+    QueryName|contains: ".epifaniastudio.com"
+  condition: selection
+level: medium

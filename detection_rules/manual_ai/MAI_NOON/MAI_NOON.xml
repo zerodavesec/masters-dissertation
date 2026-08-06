@@ -1,0 +1,56 @@
+<group name="MAI_NOON_DET_1">
+    <rule id="900661" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Matches on an EventID 13 (Registry Value Set) where an executable in a suspicious directory is configured to run based on RegRunKeys for persistence. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 02c314b7-f583-4a50-90cf-32f20bc6298b -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</field>
+        <field name="Details" type="pcre2">(?i)(\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="Details" type="pcre2">(?i)\.exe</field>
+        <description>MAI_NOON_DET_1</description>
+        <mitre>
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_NOON_DET_2">
+    <rule id="900662" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Matches when an executable from a suspicious location reaches out to known C2 infrastructure. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 1c48edb6-9110-40fb-bfc1-5cff8b1390d9 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="Image" type="pcre2">\.exe$</field>
+        <field name="QueryName" type="pcre2">\.epifaniastudio\.com</field>
+        <description>MAI_NOON_DET_2</description>
+        <mitre>
+            <id>T1574.002</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_NOON_CORR">
+    <rule id="900663" level="12" timeframe="120">
+        <!-- Author: Manual -->
+        <!-- Description: Correlates MAI_NOON_DET_1 and MAI_NOON_DET_2 when the happen within 2 mins -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 819d016b-2824-4298-b208-44d1b18e1e4f -->
+        <if_matched_sid>900661</if_matched_sid>
+        <if_sid>900662</if_sid>
+        <description>MAI_NOON_CORR</description>
+        <mitre>
+            <id>T1547.001</id>
+            <id>T1574.002</id>
+        </mitre>
+    </rule>
+</group>

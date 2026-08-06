@@ -1,0 +1,25 @@
+title: MAI_NOON_DET_1
+id: 02c314b7-f583-4a50-90cf-32f20bc6298b
+status: experimental
+description: Matches on an EventID 13 (Registry Value Set) where an executable in a suspicious directory is configured to run based on RegRunKeys for persistence.
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.persistence
+  - attack.t1547.001
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection_1:
+    EventID: 13
+    Image|endswith: ".exe"
+    TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+    Details|contains:
+      - '\AppData\Roaming\'
+      - '\Users\Public\'
+      - '\AppData\Local\Temp\'
+  selection_2:
+    Details|contains: ".exe"
+  condition: selection_1 and selection_2
+level: medium

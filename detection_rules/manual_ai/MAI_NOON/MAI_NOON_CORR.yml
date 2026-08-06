@@ -1,0 +1,13 @@
+title: MAI_NOON_CORR
+id: 819d016b-2824-4298-b208-44d1b18e1e4f
+status: experimental
+description: Correlates MAI_NOON_DET_1 and MAI_NOON_DET_2 when the happen within 2 mins
+correlation:
+  type: temporal_ordered
+  rules:
+    - 02c314b7-f583-4a50-90cf-32f20bc6298b
+    - 1c48edb6-9110-40fb-bfc1-5cff8b1390d9
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

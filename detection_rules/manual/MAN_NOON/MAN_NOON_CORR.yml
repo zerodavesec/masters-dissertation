@@ -1,0 +1,13 @@
+title: MAN_NOON_CORR
+id: 9de2264c-b8af-41cb-96f2-adec5401cd6b
+status: experimental
+description: Correlates MAN_NOON_DET_1 and MAN_NOON_DET_2 when the happen within 2 mins
+correlation:
+  type: temporal_ordered
+  rules:
+    - c0c52c50-4b03-4088-b0a4-92f5d8d453d7
+    - 84e4727e-9ba4-443a-8323-deb7e308b204
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

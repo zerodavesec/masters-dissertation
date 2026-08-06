@@ -1,0 +1,23 @@
+title: MAN_NOON_DET_2
+id: 84e4727e-9ba4-443a-8323-deb7e308b204
+status: experimental
+description: Matches on a executable file being loaded from a suspicious location. In the logs it was called 'antivi.exe' but that may change. The image is not signed, and it has an originalfilename.
+author: Manual
+date: 04/08/2026
+tags:
+  - attack.t1574.002
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    Image|contains:
+      - '\Windows\Start Menu\Programs\StartUp\'
+      - '\AppData\Roaming\'
+      - '\Users\Public\'
+      - '\AppData\Local\Temp\'
+    Signed: "false"
+    OriginalFileName: "adea.exe"
+  condition: selection
+level: medium

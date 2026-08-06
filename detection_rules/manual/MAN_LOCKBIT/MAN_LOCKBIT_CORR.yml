@@ -1,0 +1,14 @@
+title: MAN_LOCKBIT_CORR
+id: 7d50d8e3-1b73-4c66-9011-8f4b53d36a38
+status: experimental
+description: Detects 50 WINEVT channels being disabled within 1 minute. Clear indicator of malicious activity
+correlation:
+  type: event_count
+  rules:
+    - 5f09b330-00d0-4cf3-bc96-a4c6456a2ee6
+  group-by:
+    - Hostname
+  timespan: 1m
+  condition:
+    gte: 50
+level: medium

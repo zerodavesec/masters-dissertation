@@ -1,0 +1,57 @@
+<group name="MAN_NOON_DET_1">
+    <rule id="900061" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Matches on an EventID 13 (Registry Value Set) where an executable in a suspicious directory is configured to run based on RegRunKeys for persistence. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: c0c52c50-4b03-4088-b0a4-92f5d8d453d7 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</field>
+        <field name="Details" type="pcre2">(?i)(\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="Details" type="pcre2">(?i)\.exe</field>
+        <description>MAN_NOON_DET_1</description>
+        <mitre>
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_NOON_DET_2">
+    <rule id="900062" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Matches on a executable file being loaded from a suspicious location. In the logs it was called 'antivi.exe' but that may change. The image is not signed, and it has an originalfilename. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 84e4727e-9ba4-443a-8323-deb7e308b204 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^7$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="Image" type="pcre2">(?i)(\\Windows\\Start Menu\\Programs\\StartUp\\|\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="Signed">false</field>
+        <field name="OriginalFileName">adea.exe</field>
+        <description>MAN_NOON_DET_2</description>
+        <mitre>
+            <id>T1574.002</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_NOON_CORR">
+    <rule id="900063" level="12" timeframe="120">
+        <!-- Author: Manual -->
+        <!-- Description: Correlates MAN_NOON_DET_1 and MAN_NOON_DET_2 when the happen within 2 mins -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 9de2264c-b8af-41cb-96f2-adec5401cd6b -->
+        <if_matched_sid>900061</if_matched_sid>
+        <if_sid>900062</if_sid>
+        <description>MAN_NOON_CORR</description>
+        <mitre>
+            <id>T1547.001</id>
+            <id>T1574.002</id>
+        </mitre>
+    </rule>
+</group>

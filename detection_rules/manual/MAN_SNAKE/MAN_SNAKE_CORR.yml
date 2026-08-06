@@ -1,0 +1,13 @@
+title: MAN_SNAKE_CORR
+id: 5f0625f4-4a42-4f4c-b867-8d48112ce3e2
+status: experimental
+description: Correlates MAN_SNAKE_DET_1 and MAN_SNAKE_DET_2 when 2 follows 1 within 2 minutes
+correlation:
+  type: temporal_ordered
+  rules:
+    - 2924dd4f-0869-4daf-b409-e5e3b36a5705
+    - ffebf44c-361a-4647-b3f2-cb3dee66a800
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

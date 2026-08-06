@@ -1,0 +1,20 @@
+title: MAN_LOCKBIT_DET_1
+id: af7a2785-f4c3-4b21-a0d6-8149378cb7b5
+status: experimental
+description: Detects when ransomnotes are dropped in User directories.
+author: Manual
+date: 04/08/2026
+tags:
+logsource:
+  category: file_created
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    TargetFileName|contains:
+      - '\Downloads\'
+      - '\Desktop\'
+      - '\Documents\'
+    TargetFilename|re: .*\\[a-zA-Z0-9]{3,20}\.README\.txt
+  condition: selection
+level: medium

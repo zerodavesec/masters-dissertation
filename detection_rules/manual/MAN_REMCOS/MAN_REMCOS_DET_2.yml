@@ -1,0 +1,18 @@
+title: MAN_REMCOS_DET_2
+id: 045b07b3-b19b-4042-add7-6e5b34f9fd34
+status: experimental
+description: Detecs a DNS query for specifically used remcos domain c2.
+author: manual
+date: 04/08/2026
+tags:
+  - attack.t1614
+  - attack.t1627.001
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName: ruffyayeaye.ddns.net
+    Image|endswith: '\aspnet_compiler.exe'
+  condition: selection
+level: medium

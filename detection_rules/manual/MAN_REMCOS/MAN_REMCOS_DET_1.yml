@@ -1,0 +1,17 @@
+title: MAN_REMCOS_DET_1
+id: f11490ca-1b1b-4936-854d-cde95d922146
+status: experimental
+description: Matches when aspnet_compiler.exe loads 32-bit urlmon.dll, specific behaviour to remcos.
+author: manual
+date: 04/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\aspnet_compiler.exe'
+    ImageLoaded|endswith: '\SysWOW64\urlmon.dll'
+  condition: selection
+level: medium

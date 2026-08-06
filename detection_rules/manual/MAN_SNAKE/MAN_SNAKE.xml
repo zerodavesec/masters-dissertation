@@ -1,0 +1,52 @@
+<group name="MAN_SNAKE_DET_1">
+    <rule id="900051" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects when an exclusion for Microsoft Defender is added via powershell for a file in a suspicious location and with an obfuscated name -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 2924dd4f-0869-4daf-b409-e5e3b36a5705 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)(\\powershell\.exe$|\\pwsh\.exe$)</field>
+        <field name="CommandLine" type="pcre2">(?i).* Add-MpPreference .*</field>
+        <field name="CommandLine" type="pcre2">(?i).* -ExclusionPath .*</field>
+        <field name="CommandLine" type="pcre2">(?i)(\\Windows\\Start Menu\\Programs\\StartUp\\|\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="CommandLine" type="pcre2">(?i)\\[a-zA-Z]{4,20}\.exe</field>
+        <description>MAN_SNAKE_DET_1</description>
+    </rule>
+</group>
+
+<group name="MAN_SNAKE_DET_2">
+    <rule id="900052" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects when an executable or powershell creates a DNS query to Geolocator URLs. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: ffebf44c-361a-4647-b3f2-cb3dee66a800 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)(\.exe$|\\powershell\.exe$|\\pwsh\.exe$)</field>
+        <field name="QueryName" type="pcre2">(?i)(^reallyfreegeoip\.org\.?$|^checkip\.dyndns\.org\.?$)</field>
+        <description>MAN_SNAKE_DET_2</description>
+        <mitre>
+            <id>T1627.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_SNAKE_CORR">
+    <rule id="900053" level="12" timeframe="120">
+        <!-- Author: Manual -->
+        <!-- Description: Correlates MAN_SNAKE_DET_1 and MAN_SNAKE_DET_2 when 2 follows 1 within 2 minutes -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 5f0625f4-4a42-4f4c-b867-8d48112ce3e2 -->
+        <if_matched_sid>900051</if_matched_sid>
+        <if_sid>900052</if_sid>
+        <description>MAN_SNAKE_CORR</description>
+        <mitre>
+            <id>T1627.001</id>
+        </mitre>
+    </rule>
+</group>

@@ -1,0 +1,55 @@
+<group name="MAN_REMCOS_DET_1">
+    <rule id="900041" level="12">
+        <!-- Author: manual -->
+        <!-- Description: Matches when aspnet_compiler.exe loads 32-bit urlmon.dll, specific behaviour to remcos. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: f11490ca-1b1b-4936-854d-cde95d922146 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^7$</field>
+        <field name="Image" type="pcre2">(?i)\\aspnet_compiler\.exe$</field>
+        <field name="ImageLoaded" type="pcre2">(?i)\\SysWOW64\\urlmon\.dll$</field>
+        <description>MAN_REMCOS_DET_1</description>
+        <mitre>
+            <id>T1036</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_REMCOS_DET_2">
+    <rule id="900042" level="12">
+        <!-- Author: manual -->
+        <!-- Description: Detecs a DNS query for specifically used remcos domain c2. -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 045b07b3-b19b-4042-add7-6e5b34f9fd34 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)\\aspnet_compiler\.exe$</field>
+        <field name="QueryName" type="pcre2">(?i)^ruffyayeaye\.ddns\.net\.?$</field>
+        <description>MAN_REMCOS_DET_2</description>
+        <mitre>
+            <id>T1614</id>
+            <id>T1627.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAN_REMCOS_CORR">
+    <rule id="900043" level="12" timeframe="120">
+        <!-- Author: Manual -->
+        <!-- Description: Correlates MAN_REMCOS_DET_1 and MAN_REMCOS_DET_2 when 2 follows 1 within 2 minutes. -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: a9a815c2-2e86-4941-88ca-a81abf332c02 -->
+        <if_matched_sid>900041</if_matched_sid>
+        <if_sid>900042</if_sid>
+        <description>MAN_REMCOS_CORR</description>
+        <mitre>
+            <id>T1036</id>
+            <id>T1614</id>
+            <id>T1627.001</id>
+        </mitre>
+    </rule>
+</group>

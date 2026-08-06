@@ -1,0 +1,22 @@
+title: MAN_LOCKBIT_DET_2.yml
+id: 5f09b330-00d0-4cf3-bc96-a4c6456a2ee6
+status: experimental
+description: Detects when a Windows Event Channel is disabled. Known Ransomware tactics.
+author: Manual
+date: 04/08/2026
+tags:
+  - attack.defense-impairment
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    TargetObject|contains: "\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\"
+    Details|contains: "0x00000000"
+  filter:
+    Image|endwith:
+      - '\wevutil.exe'
+      - '\TiWorker.exe'
+  condition: selection and not filter
+level: medium

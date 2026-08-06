@@ -1,0 +1,23 @@
+title: MAN_SNAKE_DET_2
+id: ffebf44c-361a-4647-b3f2-cb3dee66a800
+status: experimental
+description: Detects when an executable or powershell creates a DNS query to Geolocator URLs.
+author: Manual
+date: 04/08/2026
+tags:
+  - attack.t1627.001
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - ".exe"
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    QueryName:
+      - reallyfreegeoip.org
+      - checkip.dyndns.org
+  condition: selection
+falsepositives:
+level: medium

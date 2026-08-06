@@ -1,0 +1,46 @@
+<group name="MAN_LOCKBIT_DET_1">
+    <rule id="900071" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects when ransomnotes are dropped in User directories -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: af7a2785-f4c3-4b21-a0d6-8149378cb7b5 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFileName" type="pcre2">(?i)(\\Downloads\\|\\Desktop\\|\\Documents\\)</field>
+        <field name="TargetFilename" type="pcre2">(?i).*\\[a-zA-Z0-9]{3,20}\.README\.txt</field>
+        <description>MAN_LOCKBIT_DET_1</description>
+    </rule>
+</group>
+
+<group name="MAN_LOCKBIT_DET_2">
+    <rule id="900072" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects when a Windows Event Channel is disabled. Known Ransomware tactics -->
+        <!-- Date: 04/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 5f09b330-00d0-4cf3-bc96-a4c6456a2ee6 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="Image" type="pcre2" negate="yes">(?i)(\\wevtutil\.exe$|\\TiWorker\.exe$)</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\</field>
+        <field name="Details" type="pcre2">.*0x00000000.*</field>
+        <description>MAN_LOCKBIT_DET_2</description>
+    </rule>
+</group>
+
+<group name="MAN_LOCKBIT_CORR">
+    <rule id="900073" level="12" frequency="50" timeframe="60">
+        <!-- Author: Manual -->
+        <!-- Description: Detects 50 WINEVT channels being disabled within 1 minute. Clear indicator of malicious activity. -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 7d50d8e3-1b73-4c66-9011-8f4b53d36a38 -->
+        <if_matched_sid>900072</if_matched_sid>
+        <description>MAN_LOCKBIT_CORR</description>
+    </rule>
+</group>
+

@@ -1,0 +1,1 @@
+- Manual rules created (in Sigma), transalted to Wazuh (XML), and performed targeted testing between August 3rd and August 6th.

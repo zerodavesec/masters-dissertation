@@ -1,0 +1,14 @@
+title:
+id:
+status: experimental
+description:
+author:
+date:
+tags:
+logsource:
+  category:
+  product: windows
+detection:
+  selection:
+  condition:
+level: medium

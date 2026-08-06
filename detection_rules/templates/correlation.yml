@@ -1,0 +1,10 @@
+title:
+id:
+status: experimental
+description:
+correlation:
+  type:
+  rules:
+  group-by:
+  timespan:
+level: medium

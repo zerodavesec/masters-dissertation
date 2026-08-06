@@ -1,0 +1,14 @@
+title: MAI_LOCKBIT_CORR
+id: 292eae2e-fe37-4f34-b3fe-70c3381271db
+status: experimental
+description: Detects 50 WINEVT channels being disabled within 1 minute. Clear indicator of malicious activity
+correlation:
+  type: event_count
+  rules:
+    - 4ea8606c-9f2b-498d-9ffc-0a75debc9618
+  group-by:
+    - Hostname
+  timespan: 1m
+  condition:
+    gte: 50
+level: medium

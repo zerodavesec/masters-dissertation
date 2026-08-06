@@ -1,0 +1,46 @@
+<group name="MAN_LOCKBIT_DET_1">
+    <rule id="900471" level="12">
+        <!-- Author: Manual AI -->
+        <!-- Description: Detects when ransomnotes are dropped in User directories -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 156eb9ba-9ae0-44c6-b728-7bed183d5f50 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFileName" type="pcre2">(?i)(\\Downloads\\|\\Desktop\\|\\Documents\\)</field>
+        <field name="TargetFilename" type="pcre2">(?i).*\\[a-zA-Z0-9]{3,20}\.README\.txt</field>
+        <description>MAN_LOCKBIT_DET_1</description>
+    </rule>
+</group>
+
+<group name="MAN_LOCKBIT_DET_2">
+    <rule id="900472" level="12">
+        <!-- Author: Manual AI -->
+        <!-- Description: Detects when a Windows Event Channel is disabled. Known Ransomware tactics -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 4ea8606c-9f2b-498d-9ffc-0a75debc9618 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="Image" type="pcre2" negate="yes">(?i)(\\wevtutil\.exe$|\\TiWorker\.exe$)</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\</field>
+        <field name="Details" type="pcre2">.*0x00000000.*</field>
+        <description>MAN_LOCKBIT_DET_2</description>
+    </rule>
+</group>
+
+<group name="MAN_LOCKBIT_CORR">
+    <rule id="900473" level="12" frequency="50" timeframe="60">
+        <!-- Author: Manual AI -->
+        <!-- Description: Detects 50 WINEVT channels being disabled within 1 minute. Clear indicator of malicious activity. -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 292eae2e-fe37-4f34-b3fe-70c3381271db -->
+        <if_matched_sid>900472</if_matched_sid>
+        <description>MAN_LOCKBIT_CORR</description>
+    </rule>
+</group>
+

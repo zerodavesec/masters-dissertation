@@ -1,0 +1,52 @@
+<group name="MAI_PHORPIEX_DET_1,">
+    <rule id="900521" level="12">
+        <!-- Author: Manual AI -->
+        <!-- Description: Identifies a specific pattern of phorpiex dropping itself into C:\Windows\ -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: a9211c2a-c5de-4597-b9b5-e7eebd5833b8 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFilename">C:\\Windows\\syscrovhost.exe</field>
+        <description>MAI_PHORPIEX_DET_1</description>
+        <mitre>
+            <id>T1105</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_PHORPIEX_DET_2,">
+    <rule id="900522" level="12">
+        <!-- Author: Manual AI -->
+        <!-- Description: Matches on an EventID 13 (Registry Value Set) where an executable in a suspicious directory is configured to run based on RegRunKeys for persistence. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 35238c72-a9a8-4a23-8d0b-33ff61b64bc7 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\Microsoft\\Windows\\CurrentVersion\\Run</field>
+        <field name="Details" type="pcre2">(?i)(C:\\Windows\\|\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <field name="Details" type="pcre2">(?i)\.exe</field>
+        <description>MAI_PHORPIEX_DET_2</description>
+        <mitre>
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_PHORPIEX_CORR,">
+    <rule id="900523" level="14" timeframe="120">
+        <!-- Author: Manual AI -->
+        <!-- Description: Correlates MAI_PHORPIEX_DET_1 and MAI_PHORPIEX_DET_2 within 2 minutes on the same host. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: da02e066-8705-44d5-8ccb-0b80bc2e9239 -->
+        <if_matched_sid>900521</if_matched_sid>
+        <if_sid>900522</if_sid>
+        <description>MAI_PHORPIEX_CORR</description>
+    </rule>
+</group>

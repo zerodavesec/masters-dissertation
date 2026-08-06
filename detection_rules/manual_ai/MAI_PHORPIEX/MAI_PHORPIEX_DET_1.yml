@@ -1,0 +1,16 @@
+title: MAI_PHORPIEX_DET_1
+id: a9211c2a-c5de-4597-b9b5-e7eebd5833b8
+status: experimental
+description: Identifies a specific pattern of phorpiex dropping itself into C:\\Windows\\.
+author: Manual AI
+date: 06/08/2026
+tags:
+logsource:
+  category: file_created
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    TargetFileName: "C:\\Windows\\syscrovhost.exe"
+  condition: selection
+level: medium

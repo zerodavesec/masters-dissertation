@@ -1,0 +1,22 @@
+title: MAI_LOCKBIT_DET_2.yml
+id: 4ea8606c-9f2b-498d-9ffc-0a75debc9618
+status: experimental
+description: Detects when a Windows Event Channel is disabled. Known Ransomware tactics.
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.defense-impairment
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    TargetObject|contains: "\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\"
+    Details|contains: "0x00000000"
+  filter:
+    Image|endwith:
+      - '\wevutil.exe'
+      - '\TiWorker.exe'
+  condition: selection and not filter
+level: medium

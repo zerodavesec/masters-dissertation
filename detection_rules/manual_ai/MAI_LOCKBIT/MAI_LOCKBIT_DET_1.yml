@@ -1,0 +1,19 @@
+title: MAI_LOCKBIT_DET_1
+id: 156eb9ba-9ae0-44c6-b728-7bed183d5f50
+status: experimental
+description: Detects when ransomnotes are dropped in User directories.
+author: Manual AI
+date: 06/08/2026
+logsource:
+  category: file_created
+  product: windows
+detection:
+  selection:
+    Image|endswith: ".exe"
+    TargetFileName|contains:
+      - '\Downloads\'
+      - '\Desktop\'
+      - '\Documents\'
+    TargetFilename|re: .*\\[a-zA-Z0-9]{3,20}\.README\.txt
+  condition: selection
+level: medium

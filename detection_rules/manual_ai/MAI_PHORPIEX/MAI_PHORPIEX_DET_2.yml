@@ -1,0 +1,26 @@
+title: MAI_PHORPIEX_DET_2
+id: 35238c72-a9a8-4a23-8d0b-33ff61b64bc7
+status: experimental
+description: Matches on an EventID 13 (Registry Value Set) where an executable in a suspicious directory is configured to run based on RegRunKeys for persistence
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.persistence
+  - attack.t1547.001
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    EventID: 13
+    Image|endswith: ".exe"
+    TargetObject|contains: '\Microsoft\Windows\CurrentVersion\Run'
+    Details|contain:
+      - 'C:\Windows\'
+      - '\AppData\Roaming\'
+      - '\Users\Public\'
+      - '\AppData\Local\Temp\'
+  selection_2:
+    Details|contain: ".exe"
+  condition: selection
+level: medium

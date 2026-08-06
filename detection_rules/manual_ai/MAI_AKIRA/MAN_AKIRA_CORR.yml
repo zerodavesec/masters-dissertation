@@ -1,0 +1,13 @@
+title: MAI_AKIRA_CORR
+id: 803cb30b-5bc4-4493-af9d-8926fdb953f9
+status: experimental
+description: Identifies when ransomnotes or logfiles are dropped to the file system and shadow copies are deleted via powershell within a minute of each other.
+correlation:
+  type: temporal
+  rules:
+    - b70b7717-815b-4dc4-b2d2-13ed74321a2a
+    - b42a6f3e-8fbc-4c52-8047-14731e264fed
+  group-by:
+    - Hostname
+  timespan: 1m
+level: medium

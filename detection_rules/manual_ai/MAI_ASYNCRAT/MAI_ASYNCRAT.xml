@@ -1,0 +1,54 @@
+<group name="MAI_ASYNCRAT_DET_1,">
+    <!-- Author: Manual -->
+    <!-- Description: Identifies when an executable creates another executable in a suspicious location. Known to be malware techniques.-->
+    <!-- Date: 06/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: b4e36551-8193-470c-84bc-f02c7b4e1d40 -->
+    <rule id="900111" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFilename" type="pcre2">(?i)\.exe$</field>
+        <field name="TargetFilename" type="pcre2">(?i)(\\Windows\\Start Menu\\Programs\\StartUp\\|\\AppData\\Roaming\\|\\Users\\Public\\|\\AppData\\Local\\Temp\\)</field>
+        <description>MAI_ASYNCRAT_DET_1</description>
+        <mitre>       
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+
+<group name="MAI_ASYNCRAT_DET_2,">
+    <!-- Author: Manual -->
+    <!-- Description: Identifies an executable in the startup folder loading itself in the startup folder having an original filename of 'stub.exe'. -->
+    <!-- Date: 06/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: a8faf984-ba43-4754-9ffd-992b19c94dc3 -->
+    <rule id="900112" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^7$</field>
+        <field name="Image" type="pcre2">(?i)(\\Windows\\Start Menu\\Programs\\StartUp\\.*\.exe$)</field>
+        <field name="ImageLoaded" type="pcre2">(?i)(\\Windows\\Start Menu\\Programs\\StartUp\\.*\.exe$)</field>
+        <field name="OriginalFileName">Stub.exe</field>
+        <description>MAI_ASYNCRAT_DET_2</description>
+        <mitre>
+            <id>T1547.001</id>
+            <id>T1036</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_ASYNCRAT_CORR,">
+    <!-- Author: Manual -->
+    <!-- Description: Correlation -->
+    <!-- Date: 06/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: d023a183-5c42-4b98-8804-07873c5bec88 -->
+    <rule id="900113" level="14" timeframe="60">
+        <if_matched_sid>900111</if_matched_sid>
+        <if_sid>900112</if_sid>
+        <description>MAI_ASYNCRAT_CORR</description>
+    </rule>
+</group>

@@ -1,0 +1,18 @@
+title: MAI_REMCOS_DET_2
+id: f4bd3b13-1abd-43c9-a8ed-b02f412c819a
+status: experimental
+description: Detecs a DNS query for specifically used remcos domain c2.
+author: manual AI
+date: 06/08/2026
+tags:
+  - attack.t1614
+  - attack.t1627.001
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName: ruffyayeaye.ddns.net
+    Image|endswith: '\aspnet_compiler.exe'
+  condition: selection
+level: medium

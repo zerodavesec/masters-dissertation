@@ -1,0 +1,23 @@
+title: MAI_ASYNCRAT_DET_1
+id: b4e36551-8193-470c-84bc-f02c7b4e1d40
+status: experimental
+description: Identifies when an executable creates another executable in a suspicious location. Known to be malware techniques.
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.persistence
+logsource:
+  category: file_create
+  product: windows
+detection:
+  selection_1:
+    Image|endswith: ".exe"
+    TargetFilename|endswith: ".exe"
+  selection_2:
+    TargetFilename|contains:
+      - '\Windows\Start Menu\Programs\StartUp\'
+      - '\AppData\Roaming\'
+      - '\Users\Public\'
+      - '\AppData\Local\Temp\'
+  condition: selection_1 and selection_2
+level: medium

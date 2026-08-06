@@ -1,0 +1,20 @@
+title: MAI_ASYNCRAT_DET_2
+id: a8faf984-ba43-4754-9ffd-992b19c94dc3
+status: experimental
+description: Identifies an executable in the startup folder loading itself in the startup folder having an original filename of 'stub.exe'
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|contains: '\Windows\Start Menu\Programs\StartUp\'
+    Image|endswith: ".exe"
+    ImageLoaded|contains: '\Windows\Start Menu\Programs\StartUp\'
+    ImageLoaded|endswith: ".exe"
+    OriginalFileName: "Stub.exe"
+  condition: selection
+level: medium

@@ -1,0 +1,13 @@
+title: MAI_ASYNCRAT_CORR
+id: d023a183-5c42-4b98-8804-07873c5bec88
+status: experimental
+description: Correlation of an executable dropping an executable in a suspicious location followed by an executable in a suspicious location loading itself, and having an originalFileName of 'stub.exe' which is referred to as code within the sample to drop a secondary payload
+correlation:
+  type: temporal_ordered
+  rules:
+    - b4e36551-8193-470c-84bc-f02c7b4e1d40
+    - a8faf984-ba43-4754-9ffd-992b19c94dc3
+  group-by:
+    - Hostname
+  timespan: 1m
+level: medium

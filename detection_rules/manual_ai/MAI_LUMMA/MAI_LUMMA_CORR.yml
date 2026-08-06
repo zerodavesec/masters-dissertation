@@ -1,0 +1,13 @@
+title: MAI_LUMMA_CORR
+id: afe520f6-16fe-4218-8414-ef87328ae854
+status: experimental
+description: Detects a DNS query to a typosquatted or known malicious domain followed by powershell running an EXE in \AppData\Local\Temp with an obfuscated filename
+correlation:
+  type: temporal #only temporal as dcdivas.com dns query is after DET_2
+  rules:
+    - f77239c4-6b22-4b04-85c7-028fc871031e
+    - 4e45d58a-dd74-482c-bf77-71419d095efa
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

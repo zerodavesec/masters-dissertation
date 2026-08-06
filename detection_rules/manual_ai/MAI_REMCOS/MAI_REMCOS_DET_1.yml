@@ -1,0 +1,19 @@
+title: MAI_REMCOS_DET_1
+id: ee803832-9805-4f33-a4b4-2c4ee204bdeb
+status: experimental
+description: Matches when aspnet_compiler.exe loads 32-bit urlmon.dll, specific behaviour to remcos.
+author: manual AI
+date: 06/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\aspnet_compiler.exe'
+    ImageLoaded|endswith:
+      - '\SysWOW64\urlmon.dll'
+      - '\System32\urlmon.dll'
+  condition: selection
+level: medium

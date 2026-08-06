@@ -1,0 +1,22 @@
+title: MAI_LUMMA_DET_1
+id: f77239c4-6b22-4b04-85c7-028fc871031e
+status: experimental
+description: Detects a DNS query originated from powershell to a typosquatted or known bad domain
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    QueryName|contains:
+      - "clou-dprotect.com"
+      - "dcdivas.com"
+  condition: selection
+falsepositives:
+level: medium

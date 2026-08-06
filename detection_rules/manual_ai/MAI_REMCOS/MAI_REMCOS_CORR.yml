@@ -1,0 +1,13 @@
+title: MAI_REMCOS_CORR
+id: fb9eafaa-b6a5-493d-9078-76bdd2243713
+status: experimental
+description: Correlates MAN_REMCOS_DET_1 and MAN_REMCOS_DET_2 when 2 follows 1 within 2 minutes.
+correlation:
+  type: temporal_ordered
+  rules:
+    - ee803832-9805-4f33-a4b4-2c4ee204bdeb
+    - f4bd3b13-1abd-43c9-a8ed-b02f412c819a
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

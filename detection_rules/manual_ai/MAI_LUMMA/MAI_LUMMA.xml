@@ -1,0 +1,48 @@
+<group name="MAI_LUMMA_DET_1">
+    <rule id="900231" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects a DNS query originated from powershell to a typosquatted domain. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: f77239c4-6b22-4b04-85c7-028fc871031e -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)(\\powershell\.exe$|\\pwsh\.exe$)</field>
+        <field name="QueryName" type="pcre2">(?i)(clou-dprotect|dcdivas)\.com</field>
+        <description>MAI_LUMMA_DET_1</description>
+        <mitre>
+            <id>T1036</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_LUMMA_DET_2">
+    <rule id="900232" level="12">
+        <!-- Author: Manual -->
+        <!-- Description: Detects when powershell is the ParentImage with a bypass execution policy and runs an executable with an obfuscated name in '\AppData\Local\Temp'. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 4e45d58a-dd74-482c-bf77-71419d095efa -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="ParentImage" type="pcre2">(?i)\\powershell\.exe$</field>
+        <field name="ParentCommandLine" type="pcre2">.*\ Set-ExecutionPolicy\ .*</field>
+        <field name="ParentCommandLine" type="pcre2">.*\ Bypass\ .*</field>
+        <field name="Image" type="pcre2">(?i)\\AppData\\Local\\Temp\\.*[a-zA-Z]{4,20}\.exe$</field>
+        <description>MAI_LUMMA_DET_2</description>
+        <mitre>
+            <id>T1059.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="MAI_LUMMA_CORR">
+    <rule id="900233" level="14" timeframe="120">
+        <!-- Sigma ID: afe520f6-16fe-4218-8414-ef87328ae854 -->
+        <if_matched_sid>900231</if_matched_sid>
+        <if_sid>900232</if_sid>
+        <description>MAI_LUMMA_COR</description>
+    </rule>
+</group>

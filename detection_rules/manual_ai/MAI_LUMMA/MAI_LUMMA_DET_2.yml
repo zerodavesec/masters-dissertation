@@ -1,0 +1,24 @@
+title: MAI_LUMMA_DET_2
+id: 4e45d58a-dd74-482c-bf77-71419d095efa
+status: experimental
+description: Detects when powershell is the parentImage with a bypass execution policy and runs an executable with an obfuscated name in '\AppData\Local\Temp'.
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_1:
+    ParentImage|endswith: '\powershell.exe'
+    ParentCommandLine|contains|all:
+      - " Set-ExecutionPolicy "
+      - " Bypass "
+    Image|contains: '\AppData\Local\Temp\'
+  selection_2:
+    Image|re: '.*\\[a-zA-Z]{4,20}\.exe$'
+  condition: selection_1 and selection_2
+falsepositives:
+level: medium

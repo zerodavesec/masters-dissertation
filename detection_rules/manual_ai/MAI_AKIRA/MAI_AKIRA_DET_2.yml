@@ -1,0 +1,23 @@
+title: MAI_AKIRA_DET_2
+id: b42a6f3e-8fbc-4c52-8047-14731e264fed
+status: experimental
+description: Identifies when powershell is being used to remove shadowcopy. Ransomware indicator.
+author: manual AI
+date: 06/08/2026
+tags:
+  - attack.impact
+  - attack.t1490
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image:
+      - "powershell.exe"
+      - "pwsh.exe"
+    CommandLine|contains|all:
+      - "Get-WmiObject"
+      - "shadowcopy"
+      - "Remove-WmiObject"
+  condition: selection
+level: medium

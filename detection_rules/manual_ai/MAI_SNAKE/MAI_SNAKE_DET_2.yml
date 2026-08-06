@@ -1,0 +1,27 @@
+title: MAI_SNAKE_DET_2
+id: 8d50fa17-2f55-4c4e-8bc5-e69b653743b9
+status: experimental
+description: Detects a defense evasion technique where cmd.exe is used to delete files silently.
+author: Manual AI
+date: 06/08/2026
+tags:
+  - attack.stealth
+logsource:
+  category: process_create
+  product: windows
+detection:
+  selection_cmd:
+    Image|endswith: '\cmd.exe'
+    CommandLine|contains|all:
+      - "choice"
+      - "/T"
+      - "del"
+  selection_ps:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains|all:
+      - "Start-Sleep"
+      - "Remove-Item"
+  condition: selection_cmd or selection_ps
+level: medium

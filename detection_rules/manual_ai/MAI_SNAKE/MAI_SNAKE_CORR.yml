@@ -1,0 +1,13 @@
+title: MAIN_SNAKE_CORR
+id: b1ba3bc0-30a2-4098-ae7b-5351da3479b1
+status: experimental
+description: Correlates MAI_SNAKE_DET_1 and MAI_SNAKE_DET_2 when 2 follows 1 within 2 minutes
+correlation:
+  type: temporal_ordered
+  rules:
+    - ef0783f3-b024-464d-84eb-b488e84eacfe
+    - 8d50fa17-2f55-4c4e-8bc5-e69b653743b9
+  group-by:
+    - Hostname
+  timespan: 2m
+level: medium

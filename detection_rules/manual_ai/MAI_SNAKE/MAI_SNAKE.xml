@@ -1,0 +1,64 @@
+<group name="MAI_SNAKE_DET_1,">
+    <rule id="900751" level="12">
+        <!-- Author: manual AI -->
+        <!-- Description: Detects a scheduled task creation from an /XML template, known malware behaviour. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: ef0783f3-b024-464d-84eb-b488e84eacfe -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\schtasks\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i)(\\AppData\\Local\\Temp\\|\\Windows\\Temp\\)</field>
+        <field name="CommandLine" type="pcre2">(?i)/Create</field>
+        <field name="CommandLine" type="pcre2">(?i)/TN</field>
+        <field name="CommandLine" type="pcre2">(?i)/XML</field>
+        <description>MAI_SNAKE_DET_1</description>
+    </rule>
+</group>
+
+<group name="MAI_SNAKE_DET_2,">
+    <rule id="900752" level="0" noalert="1">
+        <!-- CMD Matcher -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\cmd\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i)choice</field>
+        <field name="CommandLine" type="pcre2">(?i)/T</field>
+        <field name="CommandLine" type="pcre2">(?i)del</field> 
+        <description>MAI_SNAKE_DET_2 matcher</description>
+    </rule>
+    <rule id="900753" level="0" noalert="1">
+        <!-- PS Matcher -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\(powershell|pwsh)\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i)start-sleep</field>
+        <field name="CommandLine" type="pcre2">(?i)remove-item</field>
+        <description>MAI_SNAKE_DET_2 matcher</description>
+    </rule>
+
+    <rule id="900754" level="12">
+        <!-- Author: manual AI -->
+        <!-- Description: Detects a defense evasion technique where cmd.exe is used to delete files silently. -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 8d50fa17-2f55-4c4e-8bc5-e69b653743b9 -->
+        <if_sid>900752,900753</if_sid>
+        <description>MAI_SNAKE_DET_2</description>
+    </rule>
+</group>
+
+<group name="MAI_SNAKE_CORR">
+    <rule id="900755" level="14">
+        <!-- Author: manual AI -->
+        <!-- Date: 06/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: b1ba3bc0-30a2-4098-ae7b-5351da3479b1 -->
+        <if_matched_sid>900751</if_matched_sid>
+        <if_sid>900754</if_sid>
+        <description>MAI_SNAKE_CORR</description>
+    </rule>
+</group>

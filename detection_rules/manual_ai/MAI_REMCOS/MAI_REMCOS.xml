@@ -39,7 +39,7 @@
 
 <group name="MAI_REMCOS_CORR">
     <rule id="900343" level="12" timeframe="120">
-        <!-- Author: Manual -->
+        <!-- Author: Manual AI -->
         <!-- Description: Correlates MAI_REMCOS_DET_1 and MAI_REMCOS_DET_2 when 2 follows 1 within 2 minutes. -->
         <!-- Status: experimental -->
         <!-- Sigma ID: fb9eafaa-b6a5-493d-9078-76bdd2243713 -->

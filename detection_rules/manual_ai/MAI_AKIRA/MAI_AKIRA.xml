@@ -22,7 +22,7 @@
     </rule>
 
     <!-- Final alert -->
-    <!-- Author: Manual -->
+    <!-- Author: Manual AI -->
     <!-- Description: Identifies when a regex pattern that matches the log file from akira, or an akira readme TXT file is dropped in known places. -->
     <!-- Date: 06/08/2026 -->
     <!-- Status: experimental -->
@@ -38,7 +38,7 @@
 
 
 <group name="MAI_AKIRA_DET_2,">
-    <!-- Author: Manual -->
+    <!-- Author: Manual AI -->
     <!-- Description: Identifies when powershell is being used to remove shadowcopy. Ransomware indicator. -->
     <!-- Date: 06/08/2026 -->
     <!-- Status: experimental -->

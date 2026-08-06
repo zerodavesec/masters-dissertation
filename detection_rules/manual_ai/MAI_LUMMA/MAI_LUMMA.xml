@@ -1,6 +1,6 @@
 <group name="MAI_LUMMA_DET_1">
     <rule id="900231" level="12">
-        <!-- Author: Manual -->
+        <!-- Author: Manual AI -->
         <!-- Description: Detects a DNS query originated from powershell to a typosquatted domain. -->
         <!-- Date: 06/08/2026 -->
         <!-- Status: experimental -->
@@ -19,7 +19,7 @@
 
 <group name="MAI_LUMMA_DET_2">
     <rule id="900232" level="12">
-        <!-- Author: Manual -->
+        <!-- Author: Manual AI -->
         <!-- Description: Detects when powershell is the ParentImage with a bypass execution policy and runs an executable with an obfuscated name in '\AppData\Local\Temp'. -->
         <!-- Date: 06/08/2026 -->
         <!-- Status: experimental -->

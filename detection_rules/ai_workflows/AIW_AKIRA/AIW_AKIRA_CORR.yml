@@ -1,0 +1,15 @@
+title: Shadow Copy Removal Followed by Ransomware Notes
+id: c9c2cbdc-7a6a-4170-b219-f28c2f599674
+status: experimental
+description: Correlates the removal of Volume Shadow Copies with the creation of ransom notes on the same host within a short timeframe to identify high-confidence ransomware activity.
+author: AI Workflows
+date: 2026-08-07
+correlation:
+    type: temporal
+    rules:
+        - 365b7fc7-dc56-4c2f-aaff-490739776f91
+        - 9487f74b-4ad8-4215-9a63-3cfa814dc757
+    group-by:
+        - Computer
+    timespan: 5m
+level: critical

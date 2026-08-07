@@ -1,0 +1,49 @@
+<group name="AIW_AKIRA_DET_1,">
+    <rule id="901001" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Detects the use of PowerShell to remove Win32_Shadowcopy objects, a common
+        technique used by ransomware to prevent system recovery. -->
+        <!-- Date: 07/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 365b7fc7-dc56-4c2f-aaff-490739776f91 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\powershell\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i).*Win32_Shadowcopy.*</field>
+        <field name="CommandLine" type="pcre2">(?i).*Remove-WmiObject.*</field>
+        <description>AIW_AKIRA_DET_1</description>
+    </rule>
+</group>
+
+<group name="AIW_AKIRA_DET_2,">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects the creation of files containing 'readme' in the filename by
+    executable processes, which is often indicative of ransom notes being dropped during an attack. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 9487f74b-4ad8-4215-9a63-3cfa814dc757 -->
+    <rule id="901002" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="TargetFilename" type="pcre2">(?i).*readme.*</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <description>AIW_AKIRA_DET_2</description>
+    </rule>
+</group>
+
+<group name="AIW_AKIRA_CORR">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Correlates the removal of Volume Shadow Copies with the creation of ransom
+    notes on the same host within a short timeframe to identify high-confidence ransomware activity. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: c9c2cbdc-7a6a-4170-b219-f28c2f599674 -->
+    <rule id="901003" level="14" timeframe="300">
+        <if_matched_sid>901001</if_matched_sid>
+        <if_sid>901002</if_sid>
+        <description>AIW_AKIRA_CORR</description>
+    </rule>
+</group>
+

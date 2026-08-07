@@ -1,0 +1,47 @@
+<group name="AIW_LOCKBIT_DET_1">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects modifications to the Registry keys for the SecurityHealthService and
+    Sense services, which are critical components of Windows Defender. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 73648569-ecc5-44a3-b9a7-246752590442 -->
+    <rule id="901071" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="TargetObject" type="pcre2">(?i).*(SecurityHealthService|Sense)</field>
+        <field name="Image" type="pcre2">(?i)\\services\.exe$</field>
+        <description>AIW_LOCKBIT_DET_1</description>
+    </rule>
+</group>
+
+<group name="AIW_LOCKBIT_DET_2">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects the creation of multiple files with a consistent name across various
+    directories, which can indicate automated staging or artifact dropping. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: df1176e6-db83-4055-a251-5199c0c4a9c -->
+    <rule id="901072" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="TargetFilename" type="pcre2">(?i).*\.README\.txt</field>
+        <field name="Image" type="pcre2">(?i).*Desktop.*</field>
+        <description>AIW_LOCKBIT_DET_2</description>
+    </rule>
+</group>
+
+<group name="AIW_LOCKBIT_CORR">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Correlates the tampering of security services with a burst of file creations
+    on the same host, indicating a multi-stage attack involving defense evasion and artifact staging -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: a92640eb-e9cb-4ef4-875f-1f33287b1692 -->
+    <rule id="901073" level="14" timeframe="300">
+        <if_matched_sid>901071</if_matched_sid>
+        <if_sid>901072</if_sid>
+        <description>AIW_LOCKBIT_CORR</description>
+    </rule>
+</group>

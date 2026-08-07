@@ -1,0 +1,18 @@
+title: Creation of Multiple Files with Consistent Naming
+id: df1176e6-db83-4055-a251-5199c0c4a9c
+status: experimental
+description: Detects the creation of multiple files with a consistent name across various directories, which can indicate automated staging or artifact dropping.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: ".README.txt"
+        Image|contains: "Desktop"
+    condition: selection
+level: high

@@ -1,0 +1,20 @@
+title: Tampering with Security Health and Sense Services
+id: 73648569-ecc5-44a3-b9a7-246752590442
+status: experimental
+description: Detects modifications to the Registry keys for the SecurityHealthService and Sense services, which are critical components of Windows Defender.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\\services.exe'
+        TargetObject|contains:
+            - "SecurityHealthService"
+            - "Sense"
+    condition: selection
+level: high

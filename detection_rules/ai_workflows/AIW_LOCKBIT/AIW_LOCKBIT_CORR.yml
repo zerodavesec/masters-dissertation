@@ -1,0 +1,17 @@
+title: Defense Evasion and Artifact Staging
+id: a92640eb-e9cb-4ef4-875f-1f33287b1692
+status: experimental
+description: Correlates the tampering of security services with a burst of file creations on the same host, indicating a multi-stage attack involving defense evasion and artifact staging
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.defense_evasion
+correlation:
+    type: temporal
+    rules:
+        - 73648569-ecc5-44a3-b9a7-246752590442
+        - df1176e6-db83-4055-a251-5199c0c4a9c
+    group-by:
+        - Computer
+    timespan: 5m
+level: high

@@ -6,7 +6,7 @@ author: Manual AI
 date: 06/08/2026
 tags:
 logsource:
-  category: file_created
+  category: file_event
   product: windows
 detection:
   selection:

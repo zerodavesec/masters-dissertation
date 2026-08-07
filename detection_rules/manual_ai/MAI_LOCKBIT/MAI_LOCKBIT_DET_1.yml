@@ -5,7 +5,7 @@ description: Detects when ransomnotes are dropped in User directories.
 author: Manual AI
 date: 06/08/2026
 logsource:
-  category: file_created
+  category: file_event
   product: windows
 detection:
   selection:

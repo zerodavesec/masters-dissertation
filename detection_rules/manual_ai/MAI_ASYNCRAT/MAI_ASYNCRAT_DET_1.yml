@@ -7,7 +7,7 @@ date: 06/08/2026
 tags:
   - attack.persistence
 logsource:
-  category: file_create
+  category: file_event
   product: windows
 detection:
   selection_1:

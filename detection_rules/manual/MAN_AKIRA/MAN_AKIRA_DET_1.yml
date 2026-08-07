@@ -8,7 +8,7 @@ tags:
   - attack.impact
   - attack.t1486
 logsource:
-  category: file_create
+  category: file_event
   product: windows
 detection:
   selection_exe:

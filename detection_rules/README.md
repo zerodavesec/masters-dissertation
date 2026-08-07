@@ -1,1 +1,2 @@
 - Manual rules created (in Sigma), transalted to Wazuh (XML), and performed targeted testing between August 3rd and August 6th.
+- Manual AI rules created in Sigma, Translated to Wazuh (August 6th). Rules targeted tested August 7th.

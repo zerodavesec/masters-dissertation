@@ -1,0 +1,21 @@
+title: PowerShell DNS Query Followed by Execution of Temporary Binary
+id: 05e33b47-988e-4e8d-9ada-ee2c156739d0
+status: experimental
+description: Correlates a PowerShell process performing suspicious DNS lookups with the subsequent execution of a binary from a temporary directory, indicating a multi-stage attack involving C2 preparation and payload execution.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.initial-access
+    - attack.t1589
+logsource:
+    category: correlation
+    product: windows
+correlation:
+    type: temporal
+    rules:
+        - 6957b7e3-e9b1-40fd-9a13-91dcaeb692d4
+        - 05af39a2-cdec-4972-8a6e-199d3157741c
+    group-by:
+        - Computer
+    timespan: 5m
+level: critical

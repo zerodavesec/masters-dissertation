@@ -1,0 +1,18 @@
+title: Suspicious Execution of Binary from Temporary Directory
+id: 6957b7e3-e9b1-40fd-9a13-91dcaeb692d4
+status: experimental
+description: Detects the execution of an executable located in a temporary directory (e.g., \AppData\Local\Temp) where the parent process is PowerShell, which is common in multi-stage malware delivery.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.defense_evasion
+    - attack.t1036
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|contains: '\AppData\Local\Temp\'
+        ParentImage|endswith: '\powershell.exe'
+    condition: selection
+level: high

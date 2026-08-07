@@ -1,0 +1,20 @@
+title: PowerShell DNS Query for Suspicious Domains
+id: 05af39a2-cdec-4972-8a6e-199d3157741c
+status: experimental
+description: Detects PowerShell performing DNS lookups for potentially malicious domains, indicating preparation for C2 communication or data exfiltration.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.discovery
+    - attack.t1082
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        QueryName|contains:
+            - "clou-dprotect.com"
+            - "www.dcdivas.com"
+    condition: selection
+level: high

@@ -1,0 +1,47 @@
+<group name="AIW_LUMMA_DET_1">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects the execution of an executable located in a temporary directory (e.g.,
+    \AppData\Local\Temp) where the parent process is PowerShell, which is common in multi-stage
+    malware delivery. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 6957b7e3-e9b1-40fd-9a13-91dcaeb692d4 -->
+    <rule id="901031" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="ParentImage" type="pcre2">(?i)\\powershell\.exe$</field>
+        <field name="Image" type="pcre2">(?i).*\\AppData\\Local\\Temp\\.*</field>
+        <description>AIW_LUMMA_DET_1</description>
+    </rule>
+</group>
+<group name="AIW_LUMMA_DET_2">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects PowerShell performing DNS lookups for potentially malicious domains,
+    indicating preparation for C2 communication or data exfiltration. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 05af39a2-cdec-4972-8a6e-199d3157741c -->
+    <rule id="901032" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)\\powershell\.exe$</field>
+        <field name="QueryName" type="pcre2">(?i)(clou-dprotect\.com|www\.dcdivas\.com)</field>
+        <description>AIW_LUMMA_DET_2</description>
+    </rule>
+</group>
+<group name="AIW_LUMMA_CORR">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Correlates a PowerShell process performing suspicious DNS lookups with the
+    subsequent execution of a binary from a temporary directory, indicating a multi-stage attack
+    involving C2 preparation and payload execution. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 05e33b47-988e-4e8d-9ada-ee2c156739d0 -->
+    <rule id="901033" level="14" timeframe="300">
+        <if_matched_sid>901031</if_matched_sid>
+        <if_sid>901032</if_sid>
+        <description>AIW_LUMMA_CORR</description>
+    </rule>
+</group>

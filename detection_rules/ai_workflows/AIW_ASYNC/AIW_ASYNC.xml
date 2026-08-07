@@ -1,0 +1,48 @@
+<group name="AIW_ASYNC_DET_1">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects the creation of executable files within the Windows Startup folder, a
+    common technique used by adversaries to maintain persistence on a system. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 73ca4a04-13b7-44b1-bd3e-6957a5c4b835 -->
+    <rule id="901011" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="TargetFilename" type="pcre2">(?i).*\\Start Menu\\Programs\\StartUp\\.*</field>
+        <field name="Image" type="pcre2">(?i)\.exe$</field>
+        <description>AIW_ASYNC_DET_1</description>
+    </rule>
+</group>
+
+<group name="AIW_ASYNC_DET_2">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects the loading of an executable with a generic original filename (e.g.,
+    Stub.exe) from the Startup folder, indicating potential masquerading and persistence. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: a07900be-2a53-4f31-8f66-0913813cceeb -->
+    <rule id="901012" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^7$</field>
+        <field name="TargetFilename" type="pcre2">(?i).*\\Start Menu\\Programs\\StartUp\\.*</field>
+        <field name="OriginalFileName">Stub.exe</field>
+        <description>AIW_ASYNC_DET_2</description>
+    </rule>
+</group>
+
+<group name="AIW_ASYNC_CORR">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Correlates the creation of a file in the startup directory with its subsequent
+    loading, indicating a successful persistence mechanism being activated -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: e8479223-a45a-447c-9913-0571bbebd59b -->
+    <rule id="901013" level="14" timeframe="300">
+        <if_matched_sid>901011</if_matched_sid>
+        <if_sid>901012</if_sid>
+        <description>AIW_ASYNC_CORR</description>
+    </rule>
+</group>
+

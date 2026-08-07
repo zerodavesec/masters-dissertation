@@ -1,0 +1,18 @@
+title: Persistence via Startup Folder File Creation
+id: 73ca4a04-13b7-44b1-bd3e-6957a5c4b835
+status: experimental
+description: Detects the creation of executable files within the Windows Startup folder, a common technique used by adversaries to maintain persistence on a system.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Start Menu\Programs\StartUp\'
+        Image|endswith: ".exe"
+    condition: selection
+level: high

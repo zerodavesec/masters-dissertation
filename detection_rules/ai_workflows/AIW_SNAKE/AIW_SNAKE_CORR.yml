@@ -1,0 +1,15 @@
+title: Defense Evasion Followed by Persistence
+id: 95f534d0-3604-4430-ad86-290d458ab587
+status: experimental
+description: Correlates the use of PowerShell to add Windows Defender exclusions with the creation of a scheduled task on the same host, indicating an attempt to bypass security and establish persistence.
+author: AI Workflows
+date: 2026-08-07
+correlation:
+    type: temporal
+    rules:
+        - 66f5662a-5c42-4a77-8b8a-a2d32838ef0f
+        - fdcfbd10-9b3e-43c0-9e56-5c9f94a704dd
+    group-by:
+        - Computer
+    timespan: 10m
+level: high

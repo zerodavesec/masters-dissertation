@@ -1,0 +1,49 @@
+<group name="AIW_SNAKE_DET_1">
+    <rule id="901051" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description:  Detects the use of PowerShell to add specific paths or files to the
+        Microsoft Defender exclusion list, a common technique used by adversaries to blind security
+        software .-->
+        <!-- Date: 08/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID:  66f5662a-5c42-4a77-8b8a-a2d32838ef0f -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\powershell\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i).*Add-MpPreference.*</field>
+        <field name="CommandLine" type="pcre2">(?i).*-ExclusionPath.*</field>
+        <description>AIW_SNAKE_DET_1</description>
+    </rule>
+</group>
+
+<group name="AIW_SNAKE_DET_2">
+    <rule id="901052" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Detects the creation of a scheduled task using schtasks.exe, which is
+        often used to maintain persistence on a compromised system. -->
+        <!-- Date: 08/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: fdcfbd10-9b3e-43c0-9e56-5c9f94a704dd -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^1$</field>
+        <field name="Image" type="pcre2">(?i)\\schtasks\.exe$</field>
+        <field name="CommandLine" type="pcre2">(?i).*/Create.*</field>
+        <description>AIW_SNAKE_DET_2</description>
+    </rule>
+</group>
+
+<group name="AIW_SNAKE_CORR">
+    <rule id="901053" level="12" timeframe="300">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Correlates the use of PowerShell to add Windows Defender exclusions with
+        the creation of a scheduled task on the same host, indicating an attempt to bypass security
+        and establish persistence. -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 95f534d0-3604-4430-ad86-290d458ab587 -->
+        <if_matched_sid>901051</if_matched_sid>
+        <if_sid>901052</if_sid>
+        <description>AIW_SNAKE_CORR</description>
+    </rule>
+</group>

@@ -1,0 +1,18 @@
+title: Scheduled Task Creation for Persistence
+id: fdcfbd10-9b3e-43c0-9e56-5c9f94a704dd
+status: experimental
+description: Detects the creation of a scheduled task using schtasks.exe, which is often used to maintain persistence on a compromised system.
+author: AI Workflows
+date: 2026-08-07
+tag:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains: "/Create"
+    condition: selection
+level: high

@@ -1,0 +1,20 @@
+title: PowerShell Used to Add Windows Defender Exclusions
+id: 66f5662a-5c42-4a77-8b8a-a2d32838ef0f
+status: experimental
+description: Detects the use of PowerShell to add specific paths or files to the Microsoft Defender exclusion list, a common technique used by adversaries to blind security software.
+author: AI Workflows
+date: 2026-08-07
+tag: 
+    - attack.defense_evasion
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Add-MpPreference'
+            - 'ExclusionPath'
+    condition: selection
+level: high

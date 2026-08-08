@@ -1,0 +1,19 @@
+title: Aspnet Compiler Performing DNS Queries
+id: ee2ebaf9-88e0-4fac-8a4c-6425dbe8c86c
+status: experimental
+description: Detects the .NET Framework's aspnet_compiler.exe performing DNS lookups, a behavior that is atypical for this system component and may indicate it being used as a proxy or for C2 communication.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.command_and_control
+    - attack.t1090.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\aspnet_compiler.exe'
+        QueryName|contains:
+            - "ruffyayeaye.ddns.net"
+    condition: selection
+level: high

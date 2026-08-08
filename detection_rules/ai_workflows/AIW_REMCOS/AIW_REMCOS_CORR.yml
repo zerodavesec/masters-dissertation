@@ -1,0 +1,21 @@
+title: .NET Component Loading Web Modules Followed by DNS Activity
+id: 8c064ac4-0879-4bd1-be5a-dbd09e649587
+status: experimental
+description: Correlates the loading of urlmon.dll by aspnet_compiler.exe with subsequent DNS queries from the same process, indicating a high probability of malicious activity or exploitation of a .NET component for C2.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.command_and_control
+    - attack.t1571
+logsource:
+    category: correlation
+    product: windows
+correlation:
+    type: temporal
+    rules:
+        - 4cb62de1-95b1-464a-8b3d-98dfc4a49711
+        - ee2ebaf9-88e0-4fac-8a4c-6425dbe8c86c
+    group-by:
+        - Computer
+    timespan: 5m
+level: high

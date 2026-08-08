@@ -1,0 +1,49 @@
+<group name="AIW_REMCOS_DET_1">
+    <rule id="901041" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Detects the loading of urlmon.dll by aspnet_compiler.exe, which can be
+        used to facilitate remote content execution or web-based activities in a context where it is
+        not expected. -->
+        <!-- Date: 08/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 4cb62de1-95b1-464a-8b3d-98dfc4a49711 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^7$</field>
+        <field name="Image" type="pcre2">(?i)\\aspnet_compiler\.exe$</field>
+        <field name="ImageLoaded" type="pcre2">(?i)\\urlmon\.dll$</field>
+        <description>AIW_REMCOS_DET_1</description>
+    </rule>
+</group>
+
+<group name="AIW_REMCOS_DET_2">
+    <rule id="901042" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Detects the .NET Framework's aspnet_compiler.exe performing DNS lookups, a
+        behavior that is atypical for this system component and may indicate it being used as a
+        proxy or for C2 communication. -->
+        <!-- Date: 08/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: ee2ebaf9-88e0-4fac-8a4c-6425dbe8c86c -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)\\aspnet_compiler\.exe$</field>
+        <field name="QueryName" type="pcre2">(?i)ruffyayeaye\.ddns\.net</field>
+        <description>AIW_REMCOS_DET_2</description>
+    </rule>
+</group>
+
+<group name="AIW_REMCOS_CORR">
+    <rule id="901043" level="12" timeframe="300">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Correlates the loading of urlmon.dll by aspnet_compiler.exe with
+        subsequent DNS queries from the same process, indicating a high probability of malicious
+        activity or exploitation of a .NET component for C2. -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 8c064ac4-0879-4bd1-be5a-dbd09e649587 -->
+        <if_matched_sid>901041</if_matched_sid>
+        <if_sid>901042</if_sid>
+        <description>AIW_REMCOS_CORR</description>
+    </rule>
+</group>

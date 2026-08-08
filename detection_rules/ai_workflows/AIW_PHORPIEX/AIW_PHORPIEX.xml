@@ -1,0 +1,52 @@
+<group name="AIW_PHORPIEX_DET_1,">
+    <rule id="901021" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Detects the creation of a registry key in the 'Run' hive pointing to an executable, which is a common technique used by malware to maintain persistence on a system -->
+        <!-- Date: 07/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 02a560b2-ff8a-41a0-9e27-0167ba07331b -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="TargetObject" type="pcre2">(?i)\\Run\\</field>
+        <field name="Details" type="pcre2">(?i)\.exe</field>
+        <description>AIW_PHORPIEX_DET_1</description>
+        <mitre>
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+<group name="AIW_PHORPIEX_DET_2,">
+    <rule id="901022" level="12">
+        <!-- Author: AI Workflows -->
+        <!-- Description: Detects a process creating an executable in the Windows directory from a user-writable path (e.g., \Users\), which is common during the installation of malware or persistence mechanisms -->
+        <!-- Date: 07/08/2026 -->
+        <!-- Status: experimental -->
+        <!-- Sigma ID: 86b56c24-b028-4207-aff0-eccfcc460947 -->
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^11$</field>
+        <field name="Image" type="pcre2">(?i)\\Users\\</field>
+        <field name="TargetFilename" type="pcre2">(?i)\\Windows\\</field>
+        <description>AIW_PHORPIEX_DET_2</description>
+        <mitre>
+            <id>T1547.001</id>
+        </mitre>
+    </rule>
+</group>
+
+
+<group name="AIW_PHORPIEX_CORR">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Correlates the creation of a file in a system directory from a user-writable path with the subsequent creation of a registry run key, indicating a high-confidence persistence mechanism -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID:  6b532f11-064a-4df3-a920-46443f0ef5e8 --> 
+    <rule id="901023" level="14" timeframe="300">
+        <if_matched_sid>901021</if_matched_sid>
+        <if_sid>901022</if_sid>
+        <same_field>stamp</same_field>
+        <description>AIW_PHORPIEX_CORR</description>
+    </rule>
+</group>

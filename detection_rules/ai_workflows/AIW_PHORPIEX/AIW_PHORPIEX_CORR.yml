@@ -1,0 +1,15 @@
+title: Persistence via File Drop and Registry Modification
+id: 6b532f11-064a-4df3-a920-46443f0ef5e8
+status: experimental
+description: Correlates the creation of a file in a system directory from a user-writable path with the subsequent creation of a registry run key, indicating a high-confidence persistence mechanism.
+author: AI Workflows
+date: 2026-08-07
+correlation:
+    type: temporal
+    rules:
+        - 02a560b2-ff8a-41a0-9e27-0167ba07331b
+        - 86b56c24-b028-4207-aff0-eccfcc460947
+    group-by:
+        - Computer
+    timespan: 5m
+level: high

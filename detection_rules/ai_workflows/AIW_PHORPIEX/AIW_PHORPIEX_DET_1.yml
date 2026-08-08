@@ -1,0 +1,18 @@
+title: Persistence via Registry Run Key
+id: 02a560b2-ff8a-41a0-9e27-0167ba07331b
+status: experimental
+description: Detects the creation of a registry key in the 'Run' hive pointing to an executable, which is a common technique used by malware to maintain persistence on a system.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Run\'
+        Details|endswith: ".exe"
+    condition: selection
+level: high

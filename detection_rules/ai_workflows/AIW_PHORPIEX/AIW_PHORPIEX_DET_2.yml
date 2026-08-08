@@ -1,0 +1,18 @@
+title: Suspicious File Creation in System Directory
+id: 86b56c24-b028-4207-aff0-eccfcc460947
+status: experimental
+description: Detects a process creating an executable in the Windows directory from a user-writable path (e.g., \Users\), which is common during the installation of malware or persistence mechanisms.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.persistence
+    - attack.t1548.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|contains: "\\Users\\"
+        TargetFilename|contains: "\\Windows\\"
+    condition: selection
+level: high

@@ -1,0 +1,47 @@
+<group name="AIW_NOON_DET_1">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Detects the creation of registry keys in the 'Run' hive pointing to
+    executables located in user-writable directories like AppData, a common technique for
+    maintaining persistence. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 8d46af1b-fa04-42c1-8869-b247136249fc -->
+    <rule id="901061" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^13$</field>
+        <field name="TargetObject" type="pcre2">(?i).*\\Windows\\CurrentVersion\\Run\\.*</field>
+        <field name="Image" type="pcre2">(?i).*\\AppData\\.*</field>
+        <description>AIW_NOON_DET_1</description>
+    </rule>
+</group>
+<group name="AIW_NOON_DET_2">
+    <!-- Author: AI Workflows -->
+    <!-- Description:  Detects DNS queries made by processes running from suspicious locations (e.g.,
+    AppData or Temp), which may indicate communication with command and control (C2) infrastructure. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 16bcf3f8-25ac-45c6-b3ad-d2831c59b2df -->
+    <rule id="901062" level="12">
+        <decoded_as>json</decoded_as>
+        <field name="SourceName">Microsoft-Windows-Sysmon</field>
+        <field name="EventID">^22$</field>
+        <field name="Image" type="pcre2">(?i)(\\AppData\\|\\Temp\\)</field>
+        <field name="QueryName" type="pcre2">(?i)noip.epifaniastudio.com.br</field>
+        <description>AIW_NOON_DET_2</description>
+    </rule>
+</group>
+<group name="AIW_NOON_CORR">
+    <!-- Author: AI Workflows -->
+    <!-- Description: Correlates the creation of a persistence mechanism (Registry Run Key) with
+    subsequent network activity (DNS query) from the same host, indicating a successful infection
+    and transition to C2. -->
+    <!-- Date: 07/08/2026 -->
+    <!-- Status: experimental -->
+    <!-- Sigma ID: 4c55a7ce-88c2-41d7-bb5a-bd50828cebcb -->
+    <rule id="901063" level="14" timeframe="600">
+        <if_matched_sid>901061</if_matched_sid>
+        <if_sid>901062</if_sid>
+        <description>AIW_NOON_CORR</description>
+    </rule>
+</group>

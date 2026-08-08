@@ -1,0 +1,15 @@
+title: Persistence Followed by C2 Communication
+id: 4c55a7ce-88c2-41d7-bb5a-bd50828cebcb
+status: experimental
+description: Correlates the creation of a persistence mechanism (Registry Run Key) with subsequent network activity (DNS query) from the same host, indicating a successful infection and transition to C2.
+author: AI Workflows
+date: 2026-08-07
+correlation:
+    type: temporal
+    rules:
+        - 8d46af1b-fa04-42c1-8869-b247136249fc
+        - 16bcf3f8-25ac-45c6-b3ad-d2831c59b2df
+    group-by:
+        - Hostname
+    timespan: 10m
+level: high

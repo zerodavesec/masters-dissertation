@@ -1,0 +1,22 @@
+title: Suspicious DNS Query from Non-Standard Path
+id: 16bcf3f8-25ac-45c6-b3ad-d2831c59b2df
+status: experimental
+description: Detects DNS queries made by processes running from suspicious locations (e.g., AppData or Temp), which may indicate communication with command and control (C2) infrastructure.
+author: AI Workflows
+date: 2026-08-07
+tags:
+    - attack.command_and_control
+    - attack.t1055
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_1:
+        Image|contains:
+            - \AppData\
+            - \Temp\
+    selection_2:
+        QueryName: 
+            - noip.epifaniastudio.com.br
+    condition: selection_1 and selection_2
+level: high

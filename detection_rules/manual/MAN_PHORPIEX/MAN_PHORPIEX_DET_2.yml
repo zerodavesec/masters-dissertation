@@ -22,5 +22,5 @@ detection:
       - '\AppData\Local\Temp\'
   selection_2:
     Details|contain: ".exe"
-  condition: selection
+  condition: selection and selection_2
 level: medium
